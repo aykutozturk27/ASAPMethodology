@@ -11,6 +11,9 @@ namespace ASAPMethodology.Entities.Dtos
         public List<decimal>? MonthlyPrices { get; set; }
         public List<ExpenseTypeEnum>? ExpenseTypeEnums { get; set; }
         public List<MethodologyType>? MethodologyTypes { get; set; }
+        public List<string> ExpenseType { get; set; }
+        public List<string> MethodologyRadioOptions { get; set; }
+
         public string? CardName { get; set; }
         public string? CardLastName { get; set; }
         public int DocNum { get; set; }
@@ -20,9 +23,8 @@ namespace ASAPMethodology.Entities.Dtos
         public DateTime PolicyEndDate { get; set; }
         public string? Comments { get; set; }
         public string? Methodology { get; set; }
-        public bool IsSelected { get; set; }
-        public List<string> ExpenseType { get; set; }
-        public List<string> MethodologyRadioOptions { get; set; }
         public Guid ExpenseTypeId { get; set; }
+        public decimal InstallementAmount { get; set; }
+        public bool IsSelected { get; set; }
     }
 }

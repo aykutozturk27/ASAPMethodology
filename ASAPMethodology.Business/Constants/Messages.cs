@@ -10,5 +10,6 @@
         public static string InstallementNoIsNotEmpty = "Installement no is not empty";
         public static string PolicyEndDateIsNotEmpty = "Policy end date is not empty";
         public static string MethodologyIsNotEmpty = "Methodology is not empty";
+        public static string InstallementAmountIsNotEmpty = "Installement amount is not empty";
     }
 }

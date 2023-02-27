@@ -56,14 +56,24 @@ namespace ASAPMethodology.Business.Concrete.Managers
             installementNoList.Add(installementNo);
         }
 
-        public List<decimal> DailyPrice(decimal policyPrice)
+        public List<decimal> DailyPrice(decimal installementAmount, List<int> dayMonthNumbers)
         {
-            throw new NotImplementedException();
+            List<decimal> dailyPrices = new List<decimal>();
+            foreach (var dayMonthNumber in dayMonthNumbers)
+            {
+                dailyPrices.Add(installementAmount / 365 * dayMonthNumber);
+            }
+            return dailyPrices;
         }
 
-        public List<decimal> MonthlyPrice(decimal policyPrice)
+        public List<decimal> MonthlyPrice(decimal installementAmount, List<int> dayMonthNumbers)
         {
-            throw new NotImplementedException();
+            List<decimal> monthlyPrices = new List<decimal>();
+            for (int i = 0; i < dayMonthNumbers.Count; i++)
+            {
+                monthlyPrices.Add(installementAmount / 12);
+            }
+            return monthlyPrices;
         }
 
         public IDataResult<CostOfFutureDto> GetByExpenseTypeName(string expenseTypeName)

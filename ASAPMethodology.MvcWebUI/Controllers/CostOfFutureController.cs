@@ -13,13 +13,15 @@ namespace ASAPMethodology.MvcWebUI.Controllers
     {
         private readonly ICostOfFutureService _costOfFutureService;
         private readonly IMapper _mapper;
-        private CostOfFutureAddDto addedCostOfFuture;
+        private CostOfFutureAddDto _addedCostOfFuture;
+        private List<int> _dayMonthNumbers;
 
         public CostOfFutureController(ICostOfFutureService costOfFutureService, IMapper mapper)
         {
             _costOfFutureService = costOfFutureService;
-            addedCostOfFuture = new CostOfFutureAddDto();
             _mapper = mapper;
+            _addedCostOfFuture = new CostOfFutureAddDto();
+            _dayMonthNumbers = new List<int>();
         }
 
         [HttpGet]
@@ -36,6 +38,9 @@ namespace ASAPMethodology.MvcWebUI.Controllers
         [HttpPost]
         public IActionResult Index(CostOfFutureAddDto costOfFutureAddDto)
         {
+            costOfFutureAddDto.ExpenseTypeEnums = Enum.GetValues(typeof(ExpenseTypeEnum)).Cast<ExpenseTypeEnum>().ToList();
+            costOfFutureAddDto.MethodologyTypes = Enum.GetValues(typeof(MethodologyType)).Cast<MethodologyType>().ToList();
+
             if (ModelState.IsValid)
             {
                 var type = costOfFutureAddDto.ExpenseType.ToString()?.Split(",");
@@ -52,6 +57,10 @@ namespace ASAPMethodology.MvcWebUI.Controllers
                 var mappedExpenseTypeId = _mapper.Map<CostOfFuture>(expenseType);
                 var methodologyList = costOfFutureAddDto.MethodologyRadioOptions.ToString()?.Split(",");
 
+                var dayNumbersCount = _dayMonthNumbers.Count(x => x < costOfFutureAddDto.InstallementNo);
+                
+                _dayMonthNumbers.Add(costOfFutureAddDto.InstallementNo);
+
                 CostOfFuture costOfFuture = new()
                 {
                     ExpenseTypeId = mappedExpenseTypeId.Id,
@@ -63,7 +72,8 @@ namespace ASAPMethodology.MvcWebUI.Controllers
                     InstallementNo = costOfFutureAddDto.InstallementNo,
                     PolicyEndDate = costOfFutureAddDto.PolicyEndDate,
                     Comments = costOfFutureAddDto.Comments,
-                    Methodology = methodologyList?.ToString()
+                    Methodology = methodologyList?.ToString(),
+                    InstallementAmount = costOfFutureAddDto.InstallementAmount
                 };
 
                 var costOfFutureMap = _mapper.Map<CostOfFutureAddDto>(costOfFuture);
@@ -85,12 +95,12 @@ namespace ASAPMethodology.MvcWebUI.Controllers
         {
             var model = new CostOfFutureModel
             {
-                Days = _costOfFutureService.DayList(addedCostOfFuture.PolicyBegDate, addedCostOfFuture.PolicyEndDate, 
-                    addedCostOfFuture.InstallementNo),
-                PolicyDates = _costOfFutureService.PolicyDate(addedCostOfFuture.PolicyBegDate, addedCostOfFuture.PolicyEndDate,
-                    addedCostOfFuture.InstallementNo),
-                DailyPrices = _costOfFutureService.DailyPrice(addedCostOfFuture.PolicyNum),
-                MonthlyPrices = _costOfFutureService.MonthlyPrice(addedCostOfFuture.PolicyNum),
+                Days = _costOfFutureService.DayList(_addedCostOfFuture.PolicyBegDate, _addedCostOfFuture.PolicyEndDate, 
+                    _addedCostOfFuture.InstallementNo),
+                PolicyDates = _costOfFutureService.PolicyDate(_addedCostOfFuture.PolicyBegDate, _addedCostOfFuture.PolicyEndDate,
+                    _addedCostOfFuture.InstallementNo),
+                DailyPrices = _costOfFutureService.DailyPrice(_addedCostOfFuture.InstallementAmount, null),
+                MonthlyPrices = _costOfFutureService.MonthlyPrice(_addedCostOfFuture.InstallementAmount, null),
             };
             return View(model);
         }

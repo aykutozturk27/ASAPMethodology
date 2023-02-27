@@ -9,7 +9,7 @@ namespace ASAPMethodology.Business.Abstract
         IResult Add(CostOfFutureAddDto costOfFutureAddDto);
         List<DateTime> PolicyDate(DateTime startDate, DateTime endDate, int installementNo);
         List<int> DayList(DateTime startDate, DateTime endDate, int installementNo);
-        List<decimal> DailyPrice(decimal policyPrice);
-        List<decimal> MonthlyPrice(decimal policyPrice);
+        List<decimal> DailyPrice(decimal installementAmount, List<int> dayMonthNumbers);
+        List<decimal> MonthlyPrice(decimal installementAmount, List<int> dayMonthNumbers);
     }
 }

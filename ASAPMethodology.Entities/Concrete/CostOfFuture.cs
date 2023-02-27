@@ -13,6 +13,7 @@ namespace ASAPMethodology.Entities.Concrete
         public DateTime PolicyEndDate { get; set; }
         public string? Comments { get; set; }
         public string? Methodology { get; set; }
+        public decimal InstallementAmount { get; set; }
 
         public Guid ExpenseTypeId { get; set; }
         public ExpenseType ExpenseType { get; set; }

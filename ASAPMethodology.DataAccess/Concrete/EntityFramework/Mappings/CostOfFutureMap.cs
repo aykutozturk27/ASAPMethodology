@@ -21,6 +21,7 @@ namespace ASAPMethodology.DataAccess.Concrete.EntityFramework.Mappings
             builder.Property(cof => cof.PolicyEndDate).HasColumnName("PolicyEndDate");
             builder.Property(cof => cof.Comments).HasColumnName("Comments").HasMaxLength(300);
             builder.Property(cof => cof.Methodology).HasColumnName("Methodology").HasColumnType("nvarchar(20)");
+            builder.Property(cof => cof.InstallementAmount).HasColumnName("InstallementAmount");
 
             builder.HasOne(cof => cof.ExpenseType).WithMany(cof => cof.CostOfFutures).HasForeignKey(cof => cof.ExpenseTypeId);
         }
