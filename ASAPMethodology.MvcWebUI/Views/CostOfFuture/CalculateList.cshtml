@@ -1,0 +1,45 @@
+﻿@using System.Text;
+@model ASAPMethodology.MvcWebUI.Models.CostOfFutureModel
+@{
+    ViewData["Title"] = "CalculateList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-responsive table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Aylık Gün Sayısı</th>
+            <th>Günlük Hesaplama</th>
+            <th>Aylık Hesaplama</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var builder = new StringBuilder();
+            @foreach (var policyDate in Model.PolicyDates)
+            {
+                builder.AppendFormat("<tr>");
+                builder.AppendFormat($"<td>{@policyDate}</td>");
+            }
+
+            @foreach (var day in Model.Days)
+            {
+                builder.AppendFormat($"<td>{@day}</td>");
+            }
+
+            @foreach (var dailyPrice in Model.DailyPrices)
+            {
+                builder.AppendFormat($"<td>{@dailyPrice}</td>");
+            }
+
+            @foreach (var monthlyPrice in Model.MonthlyPrices)
+            {
+                builder.AppendFormat($"<td>{@monthlyPrice}</td>");
+                builder.AppendFormat("</tr>");
+            }
+            Html.Raw(builder);
+        }
+    </tbody>
+</table>
+
