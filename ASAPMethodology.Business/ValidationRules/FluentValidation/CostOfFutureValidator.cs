@@ -11,7 +11,6 @@ namespace ASAPMethodology.Business.ValidationRules.FluentValidation
         {
             RuleFor(x => x.CardName).NotEmpty().WithMessage(Messages.CardNameIsNotEmpty);
             RuleFor(x => x.CardLastName).NotEmpty().WithMessage(Messages.CardLastNameIsNotEmpty);
-            RuleFor(x => x.DocNum).NotEmpty().WithMessage(Messages.DocNumIsNotEmpty);
             RuleFor(x => x.PolicyNum).NotEmpty().WithMessage(Messages.PolicyNumIsNotEmpty);
             RuleFor(x => x.PolicyBegDate).NotEmpty().WithMessage(Messages.PolicyBegDateIsNotEmpty);
             RuleFor(x => x.InstallementNo).NotEmpty().WithMessage(Messages.InstallementNoIsNotEmpty);

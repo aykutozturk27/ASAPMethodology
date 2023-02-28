@@ -41,6 +41,13 @@ namespace ASAPMethodology.MvcWebUI.Controllers
             costOfFutureAddDto.ExpenseTypeEnums = Enum.GetValues(typeof(ExpenseTypeEnum)).Cast<ExpenseTypeEnum>().ToList();
             costOfFutureAddDto.MethodologyTypes = Enum.GetValues(typeof(MethodologyType)).Cast<MethodologyType>().ToList();
 
+            var dayMonthNumbers = new List<int> { costOfFutureAddDto.InstallementNo };
+
+            for (int i = 0; i < dayMonthNumbers.Count; i++)
+            {
+                _dayMonthNumbers.Add(dayMonthNumbers[i]);
+            }
+
             if (ModelState.IsValid)
             {
                 var type = costOfFutureAddDto.ExpenseType.ToString()?.Split(",");
@@ -56,10 +63,8 @@ namespace ASAPMethodology.MvcWebUI.Controllers
                 }
                 var mappedExpenseTypeId = _mapper.Map<CostOfFuture>(expenseType);
                 var methodologyList = costOfFutureAddDto.MethodologyRadioOptions.ToString()?.Split(",");
-
-                var dayNumbersCount = _dayMonthNumbers.Count(x => x < costOfFutureAddDto.InstallementNo);
                 
-                _dayMonthNumbers.Add(costOfFutureAddDto.InstallementNo);
+                _dayMonthNumbers = _dayMonthNumbers.Count(x => x == costOfFutureAddDto.InstallementNo).ToString().Cast<int>().ToList();
 
                 CostOfFuture costOfFuture = new()
                 {
@@ -99,8 +104,8 @@ namespace ASAPMethodology.MvcWebUI.Controllers
                     _addedCostOfFuture.InstallementNo),
                 PolicyDates = _costOfFutureService.PolicyDate(_addedCostOfFuture.PolicyBegDate, _addedCostOfFuture.PolicyEndDate,
                     _addedCostOfFuture.InstallementNo),
-                DailyPrices = _costOfFutureService.DailyPrice(_addedCostOfFuture.InstallementAmount, null),
-                MonthlyPrices = _costOfFutureService.MonthlyPrice(_addedCostOfFuture.InstallementAmount, null),
+                DailyPrices = _costOfFutureService.DailyPrice(_addedCostOfFuture.InstallementAmount, _dayMonthNumbers),
+                MonthlyPrices = _costOfFutureService.MonthlyPrice(_addedCostOfFuture.InstallementAmount, _dayMonthNumbers),
             };
             return View(model);
         }
